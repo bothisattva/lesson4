@@ -1,16 +1,16 @@
 import java.lang.reflect.Field;
 import java.util.Random;
 import java.util.Scanner;
+
 public class lesson4 {
-    public static int SIZE = 3;
-    public static int DOTS_TO_WIN = 3;
+    public static int SIZE = 5;
     public static final char DOT_EMPTY = '•';
     public static final char DOT_X = 'X';
     public static final char DOT_O = 'O';
     public static char[][] map;
     public static Scanner sc = new Scanner(System.in);
     public static Random rand = new Random();
-    static int []Checkmap = new int [(SIZE*2)+2];
+    static int []Checkmap = new int [(SIZE*2)+6];
 
     public static void main(String[] args) {
         initMap();
@@ -41,7 +41,7 @@ public class lesson4 {
     }
     public static boolean checkWin() {
           for (int  i: Checkmap) {
-            if (i > 2 ){
+            if (i > 3 ){
                 return  true;
             }
         }
@@ -68,21 +68,37 @@ public class lesson4 {
     public static void humanTurn() {
         int x;
         int y;
-        int d;
         do {
             System.out.println("Введите координаты в формате X Y");
             x = sc.nextInt() - 1;
             y = sc.nextInt() - 1;
         } while (!isCellValid(x, y));
-        int t=x+1;
-        d = (SIZE-t)+1;
         Checkmap[x]++;
         Checkmap[y+SIZE]++;
-        if (x == y){
+        int NewX = x+1;
+        int NewY = y+1;
+
+        if (NewX == NewY){                          //  основная диагональ
             Checkmap[(SIZE*2)]++;
         }
-        if (x == d){
+        int d;
+        d = (SIZE-NewX)+1;                          // побочная диагональ
+        if (NewX == d){
             Checkmap[(SIZE*2)+1]++;
+        }
+        if (NewX == y){                             // верхняя диагональ
+            Checkmap[(SIZE*2)+2]++;
+        }
+        if (x == NewY){                             // нижняя диагональ
+            Checkmap[(SIZE*2)+3]++;
+        }
+        int Pd_1 = SIZE-NewY;                       // вернхнаяя побочная диагональ
+        if (NewX == Pd_1){
+            Checkmap[(SIZE*2)+4]++;
+        }
+        int Pd_2 = (SIZE - NewY)+2;                 // нижняя побочная диагональ
+        if (NewX== Pd_2){
+            Checkmap[(SIZE*2)+5]++;
         }
          // while(isCellValid(x, y) == false)
         map[y][x] = DOT_X;
