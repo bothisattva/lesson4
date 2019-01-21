@@ -1,4 +1,5 @@
-import java.lang.reflect.Field;
+
+
 import java.util.Random;
 import java.util.Scanner;
 
@@ -10,9 +11,10 @@ public class lesson4 {
     public static char[][] map;
     public static Scanner sc = new Scanner(System.in);
     public static Random rand = new Random();
-    static int []Checkmap = new int [(SIZE*2)+6];
+    static int [] CheckMap = new int [(SIZE*2)+5];
 
     public static void main(String[] args) {
+
         initMap();
         printMap();
         while (true) {
@@ -40,8 +42,8 @@ public class lesson4 {
         System.out.println("Игра закончена");
     }
     public static boolean checkWin() {
-          for (int  i: Checkmap) {
-            if (i > 3 ){
+        for (int i = 0; i <CheckMap.length ; i++) {
+            if (CheckMap[i]> 3 ){
                 return  true;
             }
         }
@@ -58,12 +60,82 @@ public class lesson4 {
     public static void aiTurn() {
         int x;
         int y;
-        do {
-            x = rand.nextInt(SIZE);
-            y = rand.nextInt(SIZE);
-        } while (!isCellValid(x, y));
-        System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
-        map[y][x] = DOT_O;
+        for (int i = 0; i < CheckMap.length; i++) {
+            if (CheckMap[i] > 2) {
+                if (i >= 0 && i <= 4) {
+                    for (int j = 0; j < map[i][j]; j++) {
+                        if (map[i][j] != DOT_X && map[i][j] != DOT_O) {
+                            map[i][j] = DOT_O;
+                        }
+                    }
+                }
+            }
+            if (i >= 5 && i <= 9) {
+                int NewJ;
+                for (int j = 0; j < map.length; j++) {
+                    NewJ =  SIZE- j;
+                    if (map[j][NewJ] != DOT_X && map[j][NewJ] != DOT_O) {
+                        map[j][NewJ] = DOT_O;
+                    }
+                }
+            }
+            if (i == 10) {
+                for (int j = 0; j < map.length; j++) {
+                        if (map[j][j] != DOT_X && map[j][j] != DOT_O) {
+                             map[j][j] = DOT_O;
+                            }
+                     }
+                }
+            if (i == 11) {
+                for (int j = 0; j < map.length; j++) {
+                        if (map[j][j-1] != DOT_X && map[j][j-1] != DOT_O) {
+                            map[j][j-1] = DOT_O;
+                        }
+                    }
+
+            }
+            if (i == 12) {
+                for (int j = 0; j < map.length; j++) {
+                    if (map[j][SIZE-j] != DOT_X && map[j][SIZE-j] != DOT_O) {
+                        map[j][SIZE-j] = DOT_O;
+                    }
+                }
+
+            }
+            if (i == 11) {
+                for (int j = 0; j < map.length; j++) {
+                    if (map[j][j+1] != DOT_X && map[j][j+1] != DOT_O) {
+                        map[j][j+1] = DOT_O;
+                    }
+                }
+
+            }
+            if (i == 11) {
+                for (int j = 0; j < map.length-1; j++) {
+                    if (map[j][SIZE-j-1] != DOT_X && map[j][SIZE-j-1] != DOT_O) {
+                        map[j][SIZE-j-1] = DOT_O;
+                    }
+                }
+
+            }
+            if (i == 11) {
+                for (int j = 0; j < map.length; j++) {
+                    if (map[j][SIZE-j+1] != DOT_X && map[j][SIZE -j+1] != DOT_O) {
+                        map[j][SIZE-j+1] = DOT_O;
+                    }
+                }
+
+            }
+             else {
+
+                do {
+                x = rand.nextInt(SIZE);
+                y = rand.nextInt(SIZE);
+                } while (!isCellValid(x, y));
+                 System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
+                map[y][x] = DOT_O;
+              }
+        }
     }
     public static void humanTurn() {
         int x;
@@ -73,32 +145,32 @@ public class lesson4 {
             x = sc.nextInt() - 1;
             y = sc.nextInt() - 1;
         } while (!isCellValid(x, y));
-        Checkmap[x]++;
-        Checkmap[y+SIZE]++;
+        CheckMap[x]++;
+        CheckMap[y+SIZE]++;
         int NewX = x+1;
         int NewY = y+1;
 
         if (NewX == NewY){                          //  основная диагональ
-            Checkmap[(SIZE*2)]++;
+            CheckMap[(SIZE*2)]++;
         }
         int d;
         d = (SIZE-NewX)+1;                          // побочная диагональ
         if (NewX == d){
-            Checkmap[(SIZE*2)+1]++;
+            CheckMap[(SIZE*2)+1]++;
         }
         if (NewX == y){                             // верхняя диагональ
-            Checkmap[(SIZE*2)+2]++;
+            CheckMap[(SIZE*2)+2]++;
         }
         if (x == NewY){                             // нижняя диагональ
-            Checkmap[(SIZE*2)+3]++;
+            CheckMap[(SIZE*2)+3]++;
         }
         int Pd_1 = SIZE-NewY;                       // вернхнаяя побочная диагональ
         if (NewX == Pd_1){
-            Checkmap[(SIZE*2)+4]++;
+            CheckMap[(SIZE*2)+4]++;
         }
         int Pd_2 = (SIZE - NewY)+2;                 // нижняя побочная диагональ
         if (NewX== Pd_2){
-            Checkmap[(SIZE*2)+5]++;
+            CheckMap[(SIZE*2)+5]++;
         }
          // while(isCellValid(x, y) == false)
         map[y][x] = DOT_X;
